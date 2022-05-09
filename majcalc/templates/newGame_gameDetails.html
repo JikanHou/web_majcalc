@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    MajCalc - 新对局
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename = 'js/newGame_gameDetails.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container text-center" id="game_record">
+    <div class="container text-center border p-3 mb-1" id="template" style="border-radius:15px;background-color:#66b2ff;" hidden>
+        <div class="game_title mb-3">
+            <span class="h4" id="round_title"> XX局X本场</span>
+            <small > 供托：<span id="kyoutaku">0</span></small>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 border pb-3 pt-2" style="border-radius:15px" id="player1">
+                <span id="kaze">东</span>
+                <span id="name">{{ player_e.nickname }}</span>
+                <span id="point">25000</span>
+                <div class="container text-center" id="input_form">
+                    <form>
+                        <div class="row agari">
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="tsumo"> 自摸</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="ron">荣和</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="houcyuu">放铳</div>
+                        </div>
+                        <div class="row ryuukyoku" hidden="true">
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="tenpai">听牌</div>
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="noten">No听</div>
+                        </div>
+                        得点:<input type="text" name="tokuten" placeholder="0" style="border-style:none;border-radius:5px;">
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-3 border pb-3 pt-2" style="border-radius:15px" id="player2">
+                <span id="kaze">南</span>
+                <span id="name">{{ player_s.nickname }}</span>
+                <span id="point">25000</span>
+                <div class="container text-center" id="input_form">
+                    <form>
+                        <div class="row agari">
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="tsumo">自摸</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="ron">荣和</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="houcyuu">放铳</div>
+                        </div>
+                        <div class="row ryuukyoku" hidden="true">
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="tenpai">听牌</div>
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="noten">No听</div>
+                        </div>
+                        得点:<input type="text" name="tokuten" placeholder="0" style="border-style:none;border-radius:5px;">
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-3 border pb-3 pt-2" style="border-radius:15px" id="player3">
+                <span id="kaze">西</span>
+                <span id="name">{{ player_w.nickname }}</span>
+                <span id="point">25000</span>
+                <div class="container text-center" id="input_form">
+                    <form>
+                        <div class="row agari">
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="tsumo"> 自摸</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="ron">荣和</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="houcyuu">放铳</div>
+                        </div>
+                        <div class="row ryuukyoku" hidden="true">
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="tenpai">听牌</div>
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="noten">No听</div>
+                        </div>
+                        得点:<input type="text" name="tokuten" placeholder="0" style="border-style:none;border-radius:5px;">
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-3 border pb-3 pt-2" style="border-radius:15px" id="player4">
+                <span id="kaze">北</span>
+                <span id="name">{{ player_n.nickname }}</span>
+                <span id="point">25000</span>
+                <div class="container text-center" id="input_form">
+                    <form>
+                        <div class="row agari">
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="tsumo"> 自摸</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="ron">荣和</div>
+                            <div class="col-sm-4"> <input type="radio" name="agari" value="houcyuu">放铳</div>
+                        </div>
+                        <div class="row ryuukyoku" hidden="true">
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="tenpai">听牌</div>
+                            <div class="col-sm-6"><input type="radio", name="ryuukyoku" value="noten">No听</div>
+                        </div>
+                        得点:<input type="text" name="tokuten" placeholder="0" style="border-style:none;border-radius:5px;">
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container row">
+            对局情况：
+            <input type="text" id="reason">
+        </div>
+        <div class="row text-center" id="button_div">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8 pt-3">
+                <button type="button" class="btn btn-primary" id="confirm_button">确认</button>
+                <button type="button" class="btn btn-danger" id="delete_button">删除</button>
+            </div>
+            <div class="col-sm-2 pt-1">
+                <button type="button" class="btn btn-success btn-sm" id="agari_button">和牌</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="ryuukyoku_button">流局</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <button type="button" class="btn btn-outline-primary" id="game_end">终局</button>
+</div>
+{% endblock %}

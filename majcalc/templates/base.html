@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/form.html' import render_form %}
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {{ bootstrap.load_css() }}
+    {{ bootstrap.load_js() }}
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style type="text/css">a {text-decoration: none}</style>
+    <link rel="shortcut icon" href="{{ url_for('static', filename = 'logo.ico') }}" />
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <style type="text/css">
+        {% block css %}
+        {% endblock %}
+    </style>
+    {% block js %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-light navbar-light mb-5">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" style="width:50px;height:50px;" alt="Logo" />
+        </a>
+        <ul class="navbar-nav justify-content-center">
+            {{ render_nav_item('index', '首页') }}
+            {{ render_nav_item('statistics', '统计') }}
+            {{ render_nav_item('help', '帮助') }}
+        </ul>
+        <span class="navbar-text ms-auto">
+            {% if not current_user.is_authenticated %}
+            <small>没有登陆？点击<a href="{{ url_for('login') }}">登录</a>或<a href="{{ url_for('register') }}">注册</a></small>
+            {% else %}
+            <a href="{{ url_for('personalInfo', id=current_user.id) }}"><img src="{{ url_for('static', filename='avatars/'+current_user.avatar) }}" id="avatar_nav" width="40" height="40"></a>
+            <a href="{{ url_for('personalInfo', id=current_user.id) }}" class="text-primary">{{ current_user.nickname }}</a>
+            <a href="{{ url_for('logout') }}" class="text-danger"><small>登出</small></a>
+            {% endif %}
+        </span>
+    </nav>
+    <div class="container" id="flash_message">
+        {% for msg in get_flashed_messages() %}
+        <div class="alert alert-info fade show">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            {{ msg }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer class="text-center mt-5">
+        <small>&copy; 2022 <b>Majcalc 麻将计算工具</b> by <a href="https://github.com/JikanHou" style="text-decoration:none;">Jikan_Hou</a></small>
+        <p><small><a href="#">回到顶部</a></small></p>
+    </footer>
+
+</body>
+</html>

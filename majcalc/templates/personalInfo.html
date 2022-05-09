@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    个人信息 - {{ user.nickname }}
+{% endblock %}
+
+{% block css %}
+    .avatar-div{
+        position: relative;
+    }
+    .mask{
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(101, 101, 101, 0.6);
+        color: #ffffff;
+        opacity: 0;
+        width: 75px;
+        height: 75px;
+    }
+    .mask:hover{
+        transition: all 1s;
+        opacity:1;
+    }
+    .mask img{
+        position: absolute;
+        top: 66%;
+        left: 66%;
+    }
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename = 'js/personalInfo.js') }}"></script>
+
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-3">
+
+        </div>
+        <div class="col-6">
+            <div class="media row">
+                <div class="pull-left col-4">
+                    <div class="avatar-div">
+                        <input id="avatar-input" type="file" hidden accept="image/*">
+                        <img src="{{ url_for('static', filename = 'avatars/' + user.avatar)}}" width="75" height="75" id="avatar">
+                        {% if user.id == current_user.id %}
+                        <div class="mask" id="mask">
+                            <img src="{{ url_for('static', filename = 'camera.png') }}" width="20">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="media-body col-8">
+                    <p class="h3 media-heading"> {{ user.nickname}} </p>
+                    <p class="note">
+                        <span id="note">{{ user.note }}</span>
+                        {% if current_user.id == user.id %}
+                            <span class="btn btn-link note-modify-btn" style="cursor:pointer;"><img src="{{ url_for('static', filename = 'modify.png') }}" width="20px" height="20px">修改</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <b>{{ user.games|length }}</b>
+                    <p class="text-muted">总对局数</p>
+                </div>
+                <div class="col-sm-4">
+                    <b>{{ user.rank }}</b>
+                    <p class="text-muted">段位</p>
+                </div>
+                <div class="col-sm-4">
+                    <b>信息3</b>
+                    <p class="text-muted">提示3</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+    </div>
+    {% if user.id == current_user.id %}
+        <p class="h4 text-center">近期对战信息</p>
+    {% else %}
+        <p class="h4 text-center">近期对战信息（非本人只能浏览近10场）</p>
+    {% endif %}
+    <table class="table table-striped table-bordered table-hover game-details text-center">
+        <tbody>
+            {% for game in game_list %}
+                <tr>
+                    {% for result in game.results %}
+                        {% if user.id == result.player_id %}
+                        <td><span style="color:red;">{{ result.player_nickname }} {{result.player_point}}</span></span></td>
+                        {% else %}
+                        <td>{{ result.player_nickname }} {{result.player_point}}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% else %}
+                <p class="text-center">无对战记录</p>
+            {% endfor %}
+        </tbody>
+
+
+    </table>
+
+{% endblock %}

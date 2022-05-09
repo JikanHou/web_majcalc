@@ -1,0 +1,3 @@
+FLASK_APP = majcalc
+FLASK_ENV = DEBUG
+FLASK_DEBUG = 1

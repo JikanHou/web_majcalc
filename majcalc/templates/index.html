@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+    MajCalc - 首页
+{% endblock %}
+
+{% block content %}
+<div class="main_content row">
+    <div class="col-sm-3">
+        <div class="table1" >
+            <p class="h4 text-center">总对战局数排行榜</p>
+            <table class="table table-bordered table-hover table-striped">
+                <tbody>
+                    {% for player in most_game_players %}
+                        <tr>
+                            <th><a href="{{ url_for('personalInfo', id = player.id) }}"><img src="{{ url_for('static', filename='avatars/' + player.avatar) }}" width="20" height="20" style="max-height:40px;">{{ player.nickname }}</a></th>
+                            <th><a href="{{ url_for('personalInfo', id = player.id) }}">{{ player.games|length }}局</a></th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="table2">
+            <p class="h3">第二个表格</p>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <p class="h1 text-center">MajCalc 麻将计算工具</p>
+        <p></p>
+        <div class="text-center">
+            <a href="{{ url_for('newGame') }}" class="btn btn-primary" role="button">新对局</a>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div>
+            <p class="h3">第三个表格</p>
+        </div>
+        <div>
+            <p class="h3">第四个表格</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
